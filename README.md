@@ -25,7 +25,7 @@ To run Rentify locally, follow these steps:
 1. Clone the repository:
 
     ```bash
-    git clone <repository_url>
+    git clone https://github.com/DenisMahajan/rentify.git
     cd rentify
     ```
 
