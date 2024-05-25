@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Properties</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- 
+    - favicon
+  -->
+  <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
+
+  <!-- 
+    - custom css link
+  -->
+  <link rel="stylesheet" href="static/assets/css/style.css">
+
+  <!-- 
+    - google font link
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+    <script>
+      function openModal(propertyId) {
+          document.getElementById('contactModal').style.display = 'block';
+          document.getElementById('property_id').value = propertyId;
+      }
+      function closeModal() {
+          document.getElementById('contactModal').style.display = 'none';
+      }
+    </script>
+</head>
+<body>
+  <header class="header" data-header>
+    <div class="header-bottom">
+      <div class="container">      
+        <a href="#" class="logo">
+            <span style="font-family: 'Roboto', sans-serif; font-weight: 700; font-size: xx-large; color: black;">
+                Properties<br>             
+            </span>
+        </a> 
+        <nav class="navbar" data-navbar>
+
+          <div class="navbar-top">
+            <button class="nav-close-btn" data-nav-close-btn aria-label="Close Menu">
+              <ion-icon name="close-outline"></ion-icon>
+            </button>
+          </div>
+          <div class="navbar-bottom">
+            <ul class="navbar-list">
+              <li>
+                <a href="/" class="navbar-link" data-nav-link>Home</a>
+              </li>
+              <li>
+                <a href="#" class="navbar-link" data-nav-link>About</a>
+              </li>
+              <li>
+                <a href="#" class="navbar-link" data-nav-link>Service</a>
+              </li>
+              <li>
+                <a href="#" class="navbar-link" data-nav-link>Contact</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        <div class="header-bottom-actions">
+          <button class="header-bottom-actions-btn" aria-label="Profile" onclick="location.href='/profile'">
+            <ion-icon name="person-outline"></ion-icon>
+            <span>Profile</span></a>
+          </button>
+          <button class="header-bottom-actions-btn" data-nav-open-btn aria-label="Open Menu">
+            <ion-icon name="menu-outline"></ion-icon>
+            <span>Menu</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <!-- <h2>Properties</h2> -->
+  <div class="properties-container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="container">
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+  {% endwith %}
+    <ul class="property-list has-scrollbar">
+      {% for property in properties %}
+      <li>
+        <div class="property-card">
+          <figure class="card-banner">
+            <a href="#">
+              {% if property.image_filename %}
+              <img src="{{ url_for('static', filename='assets/images/' ~ property.image_filename) }}" alt="Property Image" class="w-100">
+              {% else %}
+              <img src="{{ url_for('static', filename='images/default_image.png') }}" alt="No Image" class="w-100">
+              {% endif %}
+            </a>
+            <div class="card-badge green">For Rent</div>
+            <div class="banner-actions">
+              <button class="banner-actions-btn">
+                <ion-icon name="location"></ion-icon>
+                <address>{{ property.add }}, {{ property.city }}</address>
+              </button>
+            </div>
+          </figure>
+          <div class="card-content">
+            <div class="card-price">
+              <strong>₹{{ property.expected_rent }}</strong>/Month
+            </div>
+            <h3 class="h3 card-title">
+              <a href="#">{{ property.app_name }}</a>
+            </h3>
+            <p class="card-text">
+              {{ property.description }}
+            </p>
+            <ul class="card-list">
+              <li class="card-item">
+                <strong>{{ property.bhk_type }}</strong>
+                <ion-icon name="bed-outline"></ion-icon>
+                <span>BHK Type</span>
+              </li>
+              <li class="card-item">
+                <strong>{{ property.floor }}</strong>
+                <ion-icon name="business-outline"></ion-icon>
+                <span>Floor</span>
+              </li>
+              <li class="card-item">
+                <strong>{{ property.area }}</strong>
+                <ion-icon name="square-outline"></ion-icon>
+                <span>Square Ft</span>
+              </li>
+            </ul>
+          </div>
+          <div class="card-footer">
+            <button class="btn" onclick="openModal('{{ property.id }}')">
+              <span>Interested</span>
+            </button>
+            <div class="card-footer-actions">
+              <button class="card-footer-actions-btn">
+                <ion-icon name="resize-outline"></ion-icon>
+              </button>
+              <button class="card-footer-actions-btn">
+                <ion-icon name="heart-outline"></ion-icon>
+              </button>
+              <button class="card-footer-actions-btn">
+                <ion-icon name="add-circle-outline"></ion-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+   <!-- The Modal -->
+   <div id="contactModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <form id="contact-form" action="/send_otp" method="POST">
+        <h3>Enter Your Email</h3>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="hidden" id="property_id" name="property_id">
+        <button type="submit">Send OTP</button>
+      </form>
+    </div>
+    <div id="otp-form" style="display: none;">
+      <h3>Enter OTP</h3>
+      <form id="verify-form" action="/verify_otp" method="POST">
+        <input type="text" name="otp" placeholder="OTP" required>
+        <button type="submit">Verify OTP</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Include Ionicons for icons used in the template -->
+  <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons.js"></script>
+
+  <!-- 
+    - custom js link
+  -->
+  <script src="static/assets/js/script.js"></script>
+
+  <!-- 
+    - ionicon link
+  -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+  <script>
+  // Get all contact buttons
+        const contactBtns = document.querySelectorAll('.btn');
+
+        // Get the modal
+        const modal = document.getElementById('contactModal');
+
+        // Get the close button
+        const closeBtn = document.querySelector('.close');
+
+        
+        // Open the modal when the contact button is clicked
+        contactBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+            modal.style.display = 'block';
+          });
+        });
+
+        // Close the modal when the close button is clicked
+        closeBtn.addEventListener('click', () => {
+          modal.style.display = 'none';
+        });
+
+        // Close the modal when clicking outside of it
+        window.addEventListener('click', (event) => {
+          if (event.target === modal) {
+            modal.style.display = 'none';
+          }
+        });
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        $('.alert').alert()
+      })
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+</body>
+</html>

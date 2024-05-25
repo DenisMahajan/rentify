@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post Your Property</title>
+  <link rel="stylesheet" href="static\assets\css\style.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .step {
+      display: none;
+    }
+    .step.active {
+      display: block;
+    }
+    /* Button Container */
+    .btn-container {
+      display: flex;
+      justify-content: space-between; /* Distribute space between the buttons */
+      gap: 20px; /* Adjust the distance between buttons */
+    }
+    /* Button Styles */
+    .next-btn, .prev-btn {
+      position: relative;
+      background: var(--orange-soda);
+      color: var(--white);
+      font-family: var(--ff-poppins);
+      font-size: var(--fs-5);
+      text-transform: var(--text-transform, capitalize);
+      border: 1px solid var(--orange-soda);
+      padding: 10px 20px;
+      z-index: 1;
+    }
+    .next-btn:is(:hover, :focus), .prev-btn:is(:hover, :focus) {
+      background: var(--black);
+      color: var(--dark-jungle-green);
+      border-color: var(--black);
+    }
+    .next-btn::before, .prev-btn::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 100%;
+      background: var(--white);
+      transition: var(--transition);
+      z-index: -1;
+    }
+    .next-btn:is(:hover, :focus)::before, .prev-btn:is(:hover, :focus)::before {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+   <header class="header" data-header>
+    <div class="header-bottom">
+      <div class="container">      
+        <a href="#" class="logo">
+            <span style="font-family: 'Roboto', sans-serif; font-weight: 700; font-size: xx-large; color: black;">
+                Properties<br>             
+            </span>
+        </a> 
+        <nav class="navbar" data-navbar>
+          <div class="navbar-top">
+            <button class="nav-close-btn" data-nav-close-btn aria-label="Close Menu">
+              <ion-icon name="close-outline"></ion-icon>
+            </button>
+          </div>
+          <div class="navbar-bottom">
+            <ul class="navbar-list">
+              <li><a href="/" class="navbar-link" data-nav-link>Home</a></li>
+              <li><a href="#" class="navbar-link" data-nav-link>About</a></li>
+              <li><a href="#" class="navbar-link" data-nav-link>Service</a></li>
+              <li><a href="#" class="navbar-link" data-nav-link>Contact</a></li>
+            </ul>
+          </div>
+
+        </nav>
+        <div class="header-bottom-actions">
+          <button class="header-bottom-actions-btn" aria-label="Profile" onclick="location.href='/profile'">
+            <ion-icon name="person-outline"></ion-icon>
+            <span>Profile</span></a>
+          </button>
+          <button class="header-bottom-actions-btn" data-nav-open-btn aria-label="Open Menu">
+            <ion-icon name="menu-outline"></ion-icon>
+            <span>Menu</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="container my-5">
+    <h2 class="text-center mb-4">Post Your Property</h2>
+    <form id="property-form" class="needs-validation" novalidate method="post" enctype="multipart/form-data">
+      <div class="step active" id="step-1">
+    
+        <div class="form-group">
+          <label for="app_name">Apartment Name</label>
+          <input type="text" class="form-control" id="app_name" name="app_name" required>
+          <div class="invalid-feedback">Please enter the apartment name.</div>
+        </div>
+        <div class="form-group">
+          <label for="bhk_type">BHK Type</label>
+          <select class="form-control" id="bhk_type" name="bhk_type" required>
+            <option value="">Select BHK Type</option>
+            <option value="1RK">1RK</option>
+            <option value="1BHK">1BHK</option>
+            <option value="2BHK">2BHK</option>
+            <option value="3BHK">3BHK</option>
+            <option value="4BHK">4BHK</option>
+            <option value="5BHK">5BHK</option>
+          </select>
+          <div class="invalid-feedback">Please select the BHK type.</div>
+        </div>
+        <div class="form-group">
+          <label for="floor">Floor</label>
+          <select class="form-control" id="floor" name="floor" required>
+            <option value="">Select Floor</option>
+            <option value="Ground floor">Ground floor</option>
+            {% for i in range(1, 101) %}
+            <option value="{{ i }}">{{ i }}</option>
+            {% endfor %}
+          </select>
+          <div class="invalid-feedback">Please select the floor.</div>
+        </div>
+        <div class="form-group">
+          <label for="total_floor">Total Floors</label>
+          <select class="form-control" id="total_floor" name="total_floor" required>
+            <option value="">Select Total Floors</option>
+            {% for i in range(0, 101) %}
+            <option value="{{ i }}">{{ i }}</option>
+            {% endfor %}
+          </select>
+          <div class="invalid-feedback">Please select the total number of floors.</div>
+        </div>
+        <div class="form-group">
+          <label for="area">Property Area</label>
+          <input type="number" class="form-control" id="area" name="area" required>
+          <div class="invalid-feedback">Please enter the property area in square feet</div>
+        </div>
+        <div class="btn-container">
+          <button type="button" class="next-btn">Next</button>
+        </div>
+      </div>
+      <div class="step" id="step-2">
+        <h3>Rental Details</h3>
+        <div class="form-group">
+          <label for="expected_rent">Expected Rent (₹/Month)</label>
+          <input type="text" class="form-control" id="expected_rent" name="expected_rent" required>
+          <div class="invalid-feedback">Please enter the expected rent.</div>
+        </div>
+        <div class="form-group">
+          <label>Preferred Tenants</label>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="preferred_tenants" id="anyone" value="Anyone" checked>
+            <label class="form-check-label" for="anyone">Anyone</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="preferred_tenants" id="family" value="Family">
+            <label class="form-check-label" for="family">Family</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="preferred_tenants" id="bachelor_female" value="Bachelor Female">
+            <label class="form-check-label" for="bachelor_female">Bachelor Female</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="preferred_tenants" id="bachelor_male" value="Bachelor Male">
+            <label class="form-check-label" for="bachelor_male">Bachelor Male</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="preferred_tenants" id="company" value="Company">
+            <label class="form-check-label" for="company">Company</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="add">Address</label>
+          <input type="text" class="form-control" id="add" name="add" required>
+          <div class="invalid-feedback">Please enter the property address.</div>
+        </div>
+        <div class="form-group">
+          <label for="city">City</label>
+          <input type="text" class="form-control" id="city" name="city" required>
+          <div class="invalid-feedback">Please enter the property city.</div>
+        </div>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea class="form-control" id="description" name="description" rows="5" required></textarea>
+          <div class="invalid-feedback">Please enter the property description.</div>
+        </div>
+        <div class="btn-container">
+          <button type="button" class="prev-btn">Previous</button>
+          <button type="button" class="next-btn">Next</button>
+        </div>
+      </div>
+      <div class="step" id="step-3">
+        <h3>Upload Property Image</h3>
+        <div class="form-group">
+          <label for="property_image">Property Image</label>
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" id="property_image" name="property_image" required>
+            <label class="custom-file-label" for="property_image">Choose file</label>
+            <div class="invalid-feedback">Please upload a property image.</div>
+          </div>
+        </div>
+        <div class="btn-container">
+          <button type="button" class="btn btn-secondary prev-btn">Previous</button>
+          <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      var form = $('#property-form');
+      var steps = form.find('.step');
+      var currentStep = 1;
+
+      form.find('.next-btn').on('click', function() {
+        if (validateStep(currentStep)) {
+          steps.removeClass('active');
+          currentStep++;
+          steps.eq(currentStep - 1).addClass('active');
+        }
+      });
+
+      form.find('.prev-btn').on('click', function() {
+        steps.removeClass('active');
+        currentStep--;
+        steps.eq(currentStep - 1).addClass('active');
+      });
+
+      function validateStep(step) {
+        var valid = true;
+        var inputs = steps.eq(step - 1).find('input, select').filter('[required]');
+        inputs.each(function() {
+          if ($(this).val() === '') {
+            valid = false;
+            $(this).addClass('is-invalid');
+          } else {
+            $(this).removeClass('is-invalid');
+          }
+        });
+        return valid;
+      }
+    });
+    $('.custom-file-input').on('change', function() {
+      let fileName = $(this).val().split('\\').pop();
+      $(this).next('.custom-file-label').addClass('selected').html(fileName);
+    });
+  </script>
+</body>
+</html>

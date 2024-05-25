@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="static\assets\css\style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet">
+</head>
+<body>
+    <header class="header" data-header>
+        <div class="overlay" data-overlay></div> 
+        <div class="header-bottom">
+          <div class="container">          
+            <a href="#" class="logo">
+                <span style="font-family: 'Roboto', sans-serif; font-weight: 700; font-size: xx-large; color: black;">
+                    RENTIFY<br>
+                    <span style="font-size: xx-small; color: black;">
+                        Where Renting meets simplicity
+                    </span>
+                </span>
+            </a>
+            <nav class="navbar" data-navbar>    
+              <div class="navbar-top">   
+                <button class="nav-close-btn" data-nav-close-btn aria-label="Close Menu">
+                  <ion-icon name="close-outline"></ion-icon>
+                </button>   
+              </div>    
+              <div class="navbar-bottom">
+                <ul class="navbar-list">
+                  <li>
+                    <a href="/" class="navbar-link" data-nav-link>Home</a>
+                  </li> 
+                  <li> 
+                    <a href="/logout" class="navbar-link" data-nav-link>logout</a>
+                  </li> 
+            </div>
+          </div>
+        </div>
+      </header>
+    <div class="container my-5" style="padding-left: 30px;">
+        <div class="row">
+            {% for user in user %}
+            <div class="col-lg-4">
+                <div class="card" style="height: 300px;">
+                        <div class="card-body text-center">
+                            <figure class="card-banner">
+                                <img src="static\assets\images\Profileimage.png" alt="Profileimage" class="w-100">
+                              </figure>
+                            <h5 class="my-3">{{ user.name }}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="card" style="margin-top: 10px;">
+                    <div class="card-body card-details" style="margin: 30px;">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0" style="font-weight: bold; font-size: medium;">Name:</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0" style="font-size: medium; color: red;">{{ user.name }}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0" style="font-weight: bold; font-size: medium;">Email:</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0" style="font-size: medium;">{{ user.email }}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0" style="font-weight: bold; font-size: medium;">Phone Number:</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0" style="font-size: medium;">{{ user.mobile }}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0" style="font-weight: bold; font-size: medium;">User Id:</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0" style="font-size: medium;">{{ user.id }}</p>
+                            </div>
+                        </div>
+                        <hr>
+                
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</body>
+</html>
