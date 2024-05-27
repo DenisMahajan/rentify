@@ -12,5 +12,14 @@
             "src":"/(.*)",
             "dest":"/"
         }
-    ]
+    ],
+    {
+  "build": {
+    "env": {
+      "MYSQLCLIENT_CFLAGS": "$(mysql_config --cflags)",
+      "MYSQLCLIENT_LDFLAGS": "$(mysql_config --libs)"
+    }
+  }
+}
+
 }
